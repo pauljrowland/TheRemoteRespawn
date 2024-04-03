@@ -86,6 +86,12 @@ mv /tmp/r2-tmp/* /var/www/html -f
 #Setup API Keys file
 mkdir /var/www/keys
 touch /var/www/keys/auth_keys
+APIKEY=$(tr -dc a-z0-9 </dev/urandom | head -c 32; echo)
+ENC_KEY=$(echo -n $APIKEY | sha256sum)
+ENC_KEY=${ENC_KEY% *}
+cat << EOF >> /var/www/keys/auth_keys
+$ENC_KEY 
+EOF
 chown www-data:www-data /var/www/keys/auth_keys
 chmod 400 /var/www/keys/auth_keys
 
@@ -115,3 +121,31 @@ EOF
 
 #Clean up
 rm /var/www/html/setup.sh
+
+clear
+
+echo ████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ███╗ ██████╗ ████████╗███████╗
+echo ╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗ ████║██╔═══██╗╚══██╔══╝██╔════╝
+echo    ██║   ███████║█████╗      ██████╔╝█████╗  ██╔████╔██║██║   ██║   ██║   █████╗
+echo    ██║   ██╔══██║██╔══╝      ██╔══██╗██╔══╝  ██║╚██╔╝██║██║   ██║   ██║   ██╔══╝
+echo    ██║   ██║  ██║███████╗    ██║  ██║███████╗██║ ╚═╝ ██║╚██████╔╝   ██║   ███████╗
+echo    ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝    ╚═╝   ╚══════╝
+echo 
+echo         ██████╗ ███████╗███████╗██████╗  █████╗ ██╗    ██╗███╗   ██╗██╗
+echo         ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗██║    ██║████╗  ██║██║
+echo         ██████╔╝█████╗  ███████╗██████╔╝███████║██║ █╗ ██║██╔██╗ ██║██║
+echo         ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██╔══██║██║███╗██║██║╚██╗██║╚═╝
+echo         ██║  ██║███████╗███████║██║     ██║  ██║╚███╔███╔╝██║ ╚████║██╗
+echo         ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝  ╚═══╝╚═╝
+echo  
+echo                     The Remote Respawn 2024 - Paul Rowland
+echo                     Unauthorized access to this device is prohibited!
+echo 
+echo The Remote Respawn has been installed. The following API key has been generated for use. Please
+echo make a note as it will not be displayed again.
+echo
+echo                               $APIKEY
+echo
+echo
+echo
+echo
