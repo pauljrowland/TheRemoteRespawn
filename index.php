@@ -1,7 +1,9 @@
 <?php
 
 //    Remote Respawn (R2)
-//    Paul Rowland
+//    PaulJRowland.
+//    This work is subject to the GNU GENERAL PUBLIC LICENSE
+//                                Version 3, 29 June 2007
 //
 //    This PHP script is to be run on a Raspberry Pi with a series of 16-Relay HATs
 //    attached. The script uses the '16relind' application on the host Pi and in turn
@@ -11,7 +13,7 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "1.0.2";
+$version = "1.0.3";
 $year = "2024";
 
 ?>
@@ -45,7 +47,7 @@ $year = "2024";
     </head>
     <body>
     <div id="content-wrap">
-
+        <br />
 <?php
 
 //    Assemble variables to make the script run on any Pi with up to 8 Relay HATs.
@@ -53,10 +55,9 @@ $ip = $_SERVER['SERVER_ADDR']; //Get the server IP for reference.
 $listBoards = "16relind -list"; //Command to count number of HATs attached.
 $numberOfHATs = shell_exec($listBoards); //Execute the command.
 if (str_contains($numberOfHATs, 'Failed to open the bus')) { //Error opening HATs.
-    echo "<div style='color:red;'><h1><br />";
-    echo "    There has been an error communicating with the Relay HAT!<br />Please ensure it has been correctly installed and refer to the<br />";
-    echo "    <a href='https://github.com/SequentMicrosystems/16relind-rpi' target='blank'>SequentMicrosystems GitHub</a> page for more information";
-    echo "</h1></div>";
+    echo "            <h2 style='color:red;'>\n";
+    echo "                There has been an error communicating with the Relay HAT!<br />Please ensure it has been correctly installed and refer to the <a href='https://github.com/SequentMicrosystems/16relind-rpi' target='blank'>SequentMicrosystems GitHub</a> page for more information";
+    echo "\n            </h2>\n";
     $numberOfHATs = 0; //Set number of HATs to 0, allowing the page to still display, alebit with the error.
 } else { //No issue communicating with the HATs.
     $numberOfHATs = substr($numberOfHATs, 0, 1); //Rip out the number from the returned string.
@@ -65,10 +66,7 @@ $pcsSupported = $numberOfHATs * 8; //Times by 8 to get the max number of support
 $MD5apiKeys = explode("\n", file_get_contents('../keys/auth_keys')); //Read auth_keys file to authenticate the user.
 
 ?>
-
-            <div>
-                <br />
-                <h1>Remote Respawn, v<?php echo $version; ?> - for Remote PCs</h1>
+            <h1>Remote Respawn, v<?php echo $version; ?> - for Remote PCs</h1>
 <?php
 
 if($_POST) {
@@ -145,68 +143,68 @@ if($_POST) {
 }
 
 ?>
-                <b>Usage:</b> Each PC has an ID between 1 and <?php echo $pcsSupported; ?>.<br /><br />
-                There are 4 power operations that can be carried out: <b>poweron</b>, <b>shutdown</b>, <b>hardpoweroff</b> and <b>hardreset</b>. <br /><br />
-                You will control the PCs via a _POST address containing the required data.<br /><br />
-                An example is using the <b>Invoke-WebRequest</b> PowerShell CMDLET, i.e.:<br /><br />
-                <i><b>Invoke-webRequest -Uri <font color="blue">https://<?php echo $ip;?>/</font> -Method Post -Body @{<font color="blue">computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"</font>}</b></i><br /><br />
-                Another example is using the <b>curl</b> command, i.e.:<br /><br />
-                <i><b>curl -d "<font color="blue">computer=31&action=hardreset&apikey=xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx</font>" -X POST <font color="blue">https://<?php echo $ip;?>/</font></b></i><br /><br />
-                <div style="width:500px;margin-left:auto;margin-right:auto">
-                    <form action="index.php" method="post">
-                        <table style="text-align:center;">
-                            <tr>
-                                <td colspan="2">
-                                    <h2>Test Area</h2>
-                                </td>
-                            </tr>
-                            <tr style="text-align:left;">
-                                <td>Computer ID:</td>
-                                <td>
-                                    <select id="computer" name="computer">
-                                        <?php
-                                            for ($i=1; $i<=$pcsSupported; $i++) {
-                                        ?>
-                                            <option value="<?php echo $i;?>"><?php echo $i;?></option>
-                                        <?php
-                                            }
-                                        ?>
-                                    </select>
-                                <td>
-                            </tr>
-                            <tr style="text-align:left;">
-                                <td>
-                                    Action to Perform:&nbsp;&nbsp;&nbsp;&nbsp;
-                                </td>
-                                <td>
-                                    <select id="action" name="action">
-                                        <option value="poweron" name="poweron">Power On</option>
-                                        <option value="shutdown" name="shutdown">Shut Down</option>
-                                        <option value="hardpoweroff" name="hardpoweroff">Hard Power Off</option>
-                                        <option value="hardreset" name="hardreset">Hard Reset</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr style="text-align:left;">
-                                <td>
-                                    API Key*:
-                                </td>
-                                <td>
-                                    <input type="password" name="apikey" required/>
-                                </td>
-                            </tr>
-                        </table>
-                        <input type="submit" name="Send Command" />
-                    </form>
-                </div>
-                <br /><br />
-                <div>
-                    <a href="/">Home</a>
-                </div>
+            <b>Usage:</b> Each PC has an ID between 1 and <?php echo $pcsSupported; ?>.<br /><br />
+            There are 4 power operations that can be carried out: <b>poweron</b>, <b>shutdown</b>, <b>hardpoweroff</b> and <b>hardreset</b>. <br /><br />
+            You will control the PCs via a _POST address containing the required data.<br /><br />
+            An example is using the <b>Invoke-WebRequest</b> PowerShell CMDLET, i.e.:<br /><br />
+            <i><b>Invoke-webRequest -Uri <font color="blue">https://<?php echo $ip;?>/</font> -Method Post -Body @{<font color="blue">computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"</font>}</b></i><br /><br />
+            Another example is using the <b>curl</b> command, i.e.:<br /><br />
+            <i><b>curl -d "<font color="blue">computer=31&action=hardreset&apikey=xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx</font>" -X POST <font color="blue">https://<?php echo $ip;?>/</font></b></i><br /><br />
+            <div style="width:500px;margin-left:auto;margin-right:auto">
+                <form action="index.php" method="post">
+                    <table style="text-align:center;">
+                        <tr>
+                            <td colspan="2">
+                                <h2>Test Area</h2>
+                            </td>
+                        </tr>
+                        <tr style="text-align:left;">
+                            <td>Computer ID:</td>
+                            <td>
+                                <select id="computer" name="computer">
+                                    <?php
+                                        for ($i=1; $i<=$pcsSupported; $i++) {
+                                    ?>
+                                    <option value="<?php echo $i;?>"><?php echo $i;?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                </select>
+                            <td>
+                        </tr>
+                        <tr style="text-align:left;">
+                            <td>
+                                Action to Perform:&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>
+                            <td>
+                                <select id="action" name="action">
+                                    <option value="poweron" name="poweron">Power On</option>
+                                    <option value="shutdown" name="shutdown">Shut Down</option>
+                                    <option value="hardpoweroff" name="hardpoweroff">Hard Power Off</option>
+                                    <option value="hardreset" name="hardreset">Hard Reset</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="text-align:left;">
+                            <td>
+                                API Key*:
+                            </td>
+                            <td>
+                                <input type="password" name="apikey" required/>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" name="Send Command" />
+                </form>
+            </div>
+            <br /><br />
+            <div>
+                <a href="/">Home</a>
+            </div>
                 <br />
             </div>
             <div id="footer">
-                <h4>v<?php echo $version; ?> &copy;<?php echo $year; ?> Paul Rowland. <a href="https://github.com/pauljrowland/TheRemoteRespawn" target="blank">GitHub<a></h4>
+                <h4>v<?php echo $version; echo "-"; echo $year; ?>-PaulJRowland - Source:<a href="https://github.com/pauljrowland/TheRemoteRespawn" target="blank">GitHub<a> - License:<a href="https://github.com/pauljrowland/TheRemoteRespawn/blob/main/LICENSE" target="blank">GNU GPL Version 3</a></h4>
             </div>
         </div>
     </body>
