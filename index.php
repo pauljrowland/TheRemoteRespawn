@@ -13,7 +13,7 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202404.1";
+$version = "202404.2";
 $year = "2024";
 
 ?>
@@ -43,11 +43,20 @@ $year = "2024";
                 color: white;
                 background:black;
             }
+            .red {
+                color:red;
+            }
+            .green {
+                color:green;
+            }
+            .blue {
+                color:blue;
+            }
         </style>
     </head>
     <body>
     <div id="content-wrap">
-        <br />
+        <br>
 <?php
 
 //    Assemble variables to make the script run on any Pi with up to 8 Relay HATs.
@@ -56,7 +65,7 @@ $listBoards = "16relind -list"; //Command to count number of HATs attached.
 $numberOfHATs = shell_exec($listBoards); //Execute the command.
 if (str_contains($numberOfHATs, 'Failed to open the bus')) { //Error opening HATs.
     echo "            <h2 style='color:red;'>\n";
-    echo "                There has been an error communicating with the Relay HAT!<br />Please ensure it has been correctly installed and refer to the <a href='https://github.com/SequentMicrosystems/16relind-rpi' target='blank'>SequentMicrosystems GitHub</a> page for more information";
+    echo "                There has been an error communicating with the Relay HAT!<br>Please ensure it has been correctly installed and refer to the <a href='https://github.com/SequentMicrosystems/16relind-rpi' target='blank'>SequentMicrosystems GitHub</a> page for more information";
     echo "\n            </h2>\n";
     $numberOfHATs = 0; //Set number of HATs to 0, allowing the page to still display, alebit with the error.
 } else { //No issue communicating with the HATs.
@@ -76,12 +85,7 @@ if($_POST) {
             $authError = TRUE;
             $errorText = "Please provide an API key to use this device"; //Tell the user to provide a key.
         }
-        foreach ($hashedKeys as $hashedKey) { //Test each API key in the list for a match against the one sent.
-            if (hash('sha256', $_POST['apikey']) == $hashedKey) { //Does it match?
-                $keyCorrect = TRUE; //Yes - it matches!
-            }
-        }
-        if (!($keyCorrect == TRUE)) { //If confirmed it doesn't match - it must be wrong.
+        if (!(in_array((hash('sha256', $_POST['apikey'])), $hashedKeys, true))){  //If confirmed it doesn't match - it must be wrong.
             $authError = TRUE;
             $errorText = "The API key provided is invalid"; //Tell the user it's wrong.
         }
@@ -126,31 +130,31 @@ if($_POST) {
 
     if (empty($errorText)) { //The $errorText variable has not been set - meaning there are no errors with the syntax of the URL specified.
         $output = shell_exec($piCommand); //Execute the above action chosen.
-        $text = '<font color="green"><h1>Success!</h1></font></strong>Performed <b>' .$action. '</b> on PC <b>' .$computer. '</b> connected to board <b>' .$board. '</b> using relay <b>' .$relay . '</b></h1></font></b><br /><br /><br />';
+        $text = '<h1><span class="green">Success!</span></h1>Performed <strong>' .$action. '</strong> on PC <strong>' .$computer. '</strong> connected to board <strong>' .$board. '</strong> using relay <strong>' .$relay . '</strong><br><br>';
         echo $text;
         http_response_code(202); //Set the HTTP response code to 202 (Accepted).
     }
     elseif ($authError) {
         http_response_code(401); //Set the HTTP response code to 401 (Unauthorized) to signal the key was incorrect or missing.
-        $errorText = '<font color="red"><h1>Failure!</h1></font></strong>The following error was returned: <b><font color="red">' .$errorText. '</font></b>, Please try again.</h1></font><br /><br /><br />';
+        $errorText = '<h1><span class="red">Failure!</span></h1>The following error was returned: <strong><span class="red">' .$errorText. '</span></strong>, Please try again.<br><br>';
         echo $errorText;
     }
     else { //ERROR: The $errorText variable had some text entered above, meaning there must be some sort of syntax error.
         http_response_code(400); //Set the HTTP response code to 400 (Bad request) to signal to the sending app the URI was invalid.
-        $errorText = '<font color="red"><h1>Failure!</h1></font></strong>The following error was returned: <b><font color="red">' .$errorText. '</font></b>, Please try again.</h1></font><br /><br /><br />';
+        $errorText = '<h1><span class="red">Failure!</span></h1>The following error was returned: <strong><span class="red">' .$errorText. '</span></strong>, Please try again.<br><br>';
         echo $errorText;
     }
 
 }
 
 ?>
-            <b>Usage:</b> Each PC has an ID between 1 and <?php echo $pcsSupported; ?>.<br /><br />
-            There are 4 power operations that can be carried out: <b>poweron</b>, <b>shutdown</b>, <b>hardpoweroff</b> and <b>hardreset</b>. <br /><br />
-            You will control the PCs via a _POST address containing the required data.<br /><br />
-            An example is using the <b>Invoke-WebRequest</b> PowerShell CMDLET, i.e.:<br /><br />
-            <i><b>Invoke-webRequest -Uri <font color="blue">https://<?php echo $ip;?>/</font> -Method Post -Body @{<font color="blue">computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"</font>}</b></i><br /><br />
-            Another example is using the <b>curl</b> command, i.e.:<br /><br />
-            <i><b>curl -d "<font color="blue">computer=31&action=hardreset&apikey=xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx</font>" -X POST <font color="blue">https://<?php echo $ip;?>/</font></b></i><br /><br />
+            <strong>Usage:</strong> Each PC has an ID between 1 and <?php echo $pcsSupported; ?>.<br><br>
+            There are 4 power operations that can be carried out: <strong>poweron</strong>, <strong>shutdown</strong>, <strong>hardpoweroff</strong> and <strong>hardreset</strong>. <br><br>
+            You will control the PCs via a _POST address containing the required data.<br><br>
+            An example is using the <strong>Invoke-WebRequest</strong> PowerShell CMDLET, i.e.:<br><br>
+            <i><strong>Invoke-webRequest -Uri <span class="blue">https://<?php echo $ip;?>/</span> -Method Post -Body @{<span class="blue">computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"</span>}</strong></i><br><br>
+            Another example is using the <strong>curl</strong> command, i.e.:<br><br>
+            <i><strong>curl -d "<span class="blue">computer=31&action=hardreset&apikey=xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx</span>" -X POST <span class="blue">https://<?php echo $ip;?>/</span></strong></i><br><br>
             <div style="width:500px;margin-left:auto;margin-right:auto">
                 <form action="index.php" method="post">
                     <table style="text-align:center;">
@@ -165,24 +169,22 @@ if($_POST) {
                                 <select id="computer" name="computer">
                                     <?php
                                         for ($i=1; $i<=$pcsSupported; $i++) {
-                                    ?>
-                                    <option value="<?php echo $i;?>"><?php echo $i;?></option>
+                                    ?><option value="<?php echo $i;?>"><?php echo $i;?></option>
                                     <?php
                                         }
-                                    ?>
-                                </select>
-                            <td>
+                                    ?></select>
+                            </td>
                         </tr>
                         <tr style="text-align:left;">
                             <td>
                                 Action to Perform:&nbsp;&nbsp;&nbsp;&nbsp;
                             </td>
                             <td>
-                                <select id="action" name="action">
-                                    <option value="poweron" name="poweron">Power On</option>
-                                    <option value="shutdown" name="shutdown">Shut Down</option>
-                                    <option value="hardpoweroff" name="hardpoweroff">Hard Power Off</option>
-                                    <option value="hardreset" name="hardreset">Hard Reset</option>
+                                <select name="action">
+                                    <option value="poweron">Power On</option>
+                                    <option value="shutdown">Shut Down</option>
+                                    <option value="hardpoweroff">Hard Power Off</option>
+                                    <option value="hardreset">Hard Reset</option>
                                 </select>
                             </td>
                         </tr>
@@ -191,21 +193,19 @@ if($_POST) {
                                 API Key*:
                             </td>
                             <td>
-                                <input type="password" name="apikey" required/>
+                                <input type="password" id="apikey" name="apikey" required>
                             </td>
                         </tr>
                     </table>
-                    <input type="submit" name="Send Command" />
+                    <input type="submit" name="Send Command">
                 </form>
             </div>
-            <br /><br />
+            <br><br>
             <div>
                 <a href="/">Home</a>
             </div>
-                <br />
-            </div>
             <div id="footer">
-                <h4>v<?php echo $version; echo "-"; echo $year; ?>-PaulJRowland - Source:<a href="https://github.com/pauljrowland/TheRemoteRespawn" target="blank">GitHub<a> - License:<a href="https://github.com/pauljrowland/TheRemoteRespawn/blob/main/LICENSE" target="blank">GNU GPL Version 3</a></h4>
+                <h4>v<?php echo $version; echo "-"; echo $year; ?>-PaulJRowland - Source:<a href="https://github.com/pauljrowland/TheRemoteRespawn" target="blank">GitHub</a> - License:<a href="https://github.com/pauljrowland/TheRemoteRespawn/blob/main/LICENSE" target="blank">GNU GPL Version 3</a></h4>
             </div>
         </div>
     </body>
