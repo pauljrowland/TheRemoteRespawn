@@ -17,8 +17,8 @@ echo "|  .  \|     | \    ||  |   |  |  | \      / |  |  |                   ";
 echo "|__|\_||_____|  \___||__|   |__|__|  \_/\_/  |__|__|                   ";
 echo "                                                                       ";   
 echo  
-echo                     The Remote Respawn 2024 - Paul Rowland
-echo                     Unauthorized access to this device is prohibited!
+echo             The Remote Respawn 2024 - Paul Rowland
+echo        Unauthorized access to this device is prohibited!
 echo 
 echo Please wait whilst the Remote Respawn installs...
 
@@ -117,8 +117,8 @@ ____     ___   _____ ____    ____  __    __  ____
 |  .  \|     | \    ||  |   |  |  | \      / |  |  |                   
 |__|\_||_____|  \___||__|   |__|__|  \_/\_/  |__|__|                   
  
-                    The Remote Respawn 2024 - Paul Rowland
-                    Unauthorized access to this device is prohibited!
+            The Remote Respawn 2024 - Paul Rowland
+       Unauthorized access to this device is prohibited!
 
 
 EOF
@@ -140,14 +140,13 @@ echo "|  .  \|     | \    ||  |   |  |  | \      / |  |  |                   ";
 echo "|__|\_||_____|  \___||__|   |__|__|  \_/\_/  |__|__|                   ";
 echo "                                                                       ";                                                                                              
 echo 
-echo The Remote Respawn has been installed. The following API key has been generated for use. Please
-echo make a note as it will not be displayed again.
+echo The Remote Respawn has been installed. The following API key has been generated for use.
+echo Please make a note as it will not be displayed again:
 echo
 echo                               $APIKEY
 echo
 echo
-echo
-echo
+
 
 #Clean up
 rm /var/www/html/setup.sh
