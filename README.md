@@ -17,7 +17,7 @@ NOTE: By default a self-signed SSL certificate is installed. To replace this wit
 By default - nobody will be able to run commands as they will require an API key.
 1) Enter *sudo nano /var/www/keys/auth_keys* to edit the keystore.
 2) Generate an API key for each user. TIP: https://codepen.io/corenominal/pen/rxOmMJ will generate a perfectly valid key.
-3) Hash the key with MD5. TIP: https://www.md5hashgenerator.com/
+3) Hash the key with SHA256. TIP: https://emn178.github.io/online-tools/sha256.html
 4) Add each hashed key to the auth_keys file on a new line.
 5) Provide the key generated in step 2 to the end user.
 

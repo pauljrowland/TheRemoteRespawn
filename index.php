@@ -13,7 +13,7 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "1.0.3";
+$version = "202404.1";
 $year = "2024";
 
 ?>
@@ -63,7 +63,7 @@ if (str_contains($numberOfHATs, 'Failed to open the bus')) { //Error opening HAT
     $numberOfHATs = substr($numberOfHATs, 0, 1); //Rip out the number from the returned string.
 }
 $pcsSupported = $numberOfHATs * 8; //Times by 8 to get the max number of supported PCs.
-$MD5apiKeys = explode("\n", file_get_contents('../keys/auth_keys')); //Read auth_keys file to authenticate the user.
+$hashedKeys = explode("\n", file_get_contents('../keys/auth_keys')); //Read auth_keys file to authenticate the user.
 
 ?>
             <h1>Remote Respawn, v<?php echo $version; ?> - for Remote PCs</h1>
@@ -76,8 +76,8 @@ if($_POST) {
             $authError = TRUE;
             $errorText = "Please provide an API key to use this device"; //Tell the user to provide a key.
         }
-        foreach ($MD5apiKeys as $MD5apiKey) { //Test each API key in the list for a match against the one sent.
-            if (md5($_POST['apikey']) == $MD5apiKey) { //Does it match?
+        foreach ($hashedKeys as $hashedKey) { //Test each API key in the list for a match against the one sent.
+            if (hash('sha256', $_POST['apikey']) == $hashedKey) { //Does it match?
                 $keyCorrect = TRUE; //Yes - it matches!
             }
         }
@@ -132,6 +132,7 @@ if($_POST) {
     }
     elseif ($authError) {
         http_response_code(401); //Set the HTTP response code to 401 (Unauthorized) to signal the key was incorrect or missing.
+        $errorText = '<font color="red"><h1>Failure!</h1></font></strong>The following error was returned: <b><font color="red">' .$errorText. '</font></b>, Please try again.</h1></font><br /><br /><br />';
         echo $errorText;
     }
     else { //ERROR: The $errorText variable had some text entered above, meaning there must be some sort of syntax error.
