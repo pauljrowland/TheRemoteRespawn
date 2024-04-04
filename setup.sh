@@ -122,6 +122,8 @@ ____     ___   _____ ____    ____  __    __  ____
 
 
 EOF
+
+ip_address=$(hostname -I | awk '{print $1}')
 clear
 echo " ______  __ __    ___      ____     ___  ___ ___   ___   ______    ___ ";
 echo "|      ||  |  |  /  _]    |    \   /  _]|   |   | /   \ |      |  /  _]";
@@ -144,6 +146,9 @@ echo The Remote Respawn has been installed. The following API key has been gener
 echo Please make a note as it will not be displayed again:
 echo
 echo                               $APIKEY
+echo
+echo      For more info and furtehr instructions, please visit:
+echo      https://$ip_address/ or http://$ip_address/
 echo
 echo
 
