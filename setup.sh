@@ -147,7 +147,7 @@ echo Please make a note as it will not be displayed again:
 echo
 echo                               $APIKEY
 echo
-echo      For more info and furtehr instructions, please visit:
+echo      For more info and further instructions, please visit:
 echo      https://$ip_address/ or http://$ip_address/
 echo
 echo
