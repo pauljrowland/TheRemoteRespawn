@@ -6,14 +6,14 @@
 //                                Version 3, 29 June 2007
 //
 //    This PHP script is to be run on a Raspberry Pi with a series of 16-Relay HATs
-//    attached. The script uses the '16relind' application on the host Pi and in turn
+//    attached. The script uses the "16relind" application on the host Pi and in turn
 //    controls the relays.
 //    An example command:  "16relind 1 write 1 on" (Relay board 1, PC 1, Relay on)
 //
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202410.1";
+$version = "202410.2";
 $year = "2024";
 
 ?>
@@ -52,6 +52,12 @@ $year = "2024";
             .blue {
                 color:blue;
             }
+            a, a:visited {
+                color:gray;
+            }
+            a:hover {
+                color:lightblue;
+            }
         </style>
     </head>
     <body>
@@ -60,19 +66,19 @@ $year = "2024";
 <?php
 
 //    Assemble variables to make the script run on any Pi with up to 8 Relay HATs.
-$ip = $_SERVER['SERVER_ADDR']; //Get the server IP for reference.
+$ip = $_SERVER["SERVER_ADDR"]; //Get the server IP for reference.
 $listBoards = "16relind -list"; //Command to count number of HATs attached.
 $numberOfHATs = shell_exec(command: $listBoards); //Execute the command.
-if (str_contains(haystack: $numberOfHATs, needle: 'Failed to open the bus')) { //Error opening HATs.
-    echo "            <h2 style='color:red;'>\n";
-    echo "                There has been an error communicating with the Relay HAT!<br>Please ensure it has been correctly installed and refer to the <a href='https://github.com/SequentMicrosystems/16relind-rpi' target='blank'>SequentMicrosystems GitHub</a> page for more information";
+if (str_contains(haystack: $numberOfHATs, needle: "Failed to open the bus")) { //Error opening HATs.
+    echo "            <h2 style=\"color:red;\">\n";
+    echo "                There has been an error communicating with the Relay HAT!<br>Please ensure it has been correctly installed and refer to the <a href=\"https://github.com/SequentMicrosystems/16relind-rpi\" target=\"blank\">SequentMicrosystems GitHub</a> page for more information";
     echo "\n            </h2>\n";
     $numberOfHATs = 0; //Set number of HATs to 0, allowing the page to still display, alebit with the error.
 } else { //No issue communicating with the HATs.
     $numberOfHATs = substr(string: $numberOfHATs, offset: 0, length: 1); //Rip out the number from the returned string.
 }
 $pcsSupported = $numberOfHATs * 8; //Times by 8 to get the max number of supported PCs.
-$hashedKeys = explode(separator: "\n", string: file_get_contents(filename: '../keys/auth_keys')); //Read auth_keys file to authenticate the user.
+$hashedKeys = explode(separator: "\n", string: file_get_contents(filename: "../keys/auth_keys")); //Read auth_keys file to authenticate the user.
 
 ?>
             <h1>Remote Respawn, v<?php echo $version; ?> - for Remote PCs</h1>
@@ -80,25 +86,25 @@ $hashedKeys = explode(separator: "\n", string: file_get_contents(filename: '../k
 
 if($_POST) {
 
-   if (isset($_POST['apikey'])){ //Was a key sent?
-        if (($_POST['apikey']) == NULL) {
+   if (isset($_POST["apikey"])){ //Was a key sent?
+        if (($_POST["apikey"]) == NULL) {
             $authError = TRUE;
             $errorText = "Please provide an API key to use this device"; //Tell the user to provide a key.
         }
-        if (!(in_array(needle: (hash(algo: 'sha256', data: $_POST['apikey'])), haystack: $hashedKeys, strict: true))){  //If confirmed it doesn't match - it must be wrong.
+        if (!(in_array(needle: hash(algo: "sha256", data: $_POST["apikey"]), haystack: $hashedKeys, strict: true))){  //If confirmed it does not match - it must be wrong.
             $authError = TRUE;
-            $errorText = "The API key provided is invalid"; //Tell the user it's wrong.
+            $errorText = "The API key provided is invalid"; //Tell the user it is wrong.
         }
     }
     else {
         $errorText = "Please provide an API key to use this device"; //Tell the user to provide a key.
     }
 
-    $computer = $_POST['computer']; //Get the computer number.
-    $action = $_POST['action']; //Get the action to be performed.
+    $computer = $_POST["computer"]; //Get the computer number.
+    $action = $_POST["action"]; //Get the action to be performed.
 
     if (empty($computer)) { //ERROR: No computer specified.
-        $errorText = 'Invalid $computer:  &lt;NULL&gt;';
+        $errorText = "Invalid $computer:  &lt;NULL&gt;";
     }
     elseif (($computer < 1) or ($computer > $pcsSupported)) { //ERROR: Computer out of range.
         $errorText = "Invalid \$computer (out of range (1-$pcsSupported):  $computer";
@@ -111,17 +117,17 @@ if($_POST) {
     if (empty($action)) { //ERROR: No action specified.
         $errorText = "Invalid $action:  &lt;NULL&gt;";
     }
-    elseif ($action == 'poweron') { //VALID: Power on the PC.
+    elseif ($action == "poweron") { //VALID: Power on the PC.
         $piCommand = "16relind $board write $relay on; sleep 0.1; 16relind $board write $relay off";
     }
-    elseif ($action == 'shutdown') { //VALID: Shut down the PC.
+    elseif ($action == "shutdown") { //VALID: Shut down the PC.
         $piCommand = "16relind $board write $relay on; sleep 0.1; 16relind $board write $relay off";
     }
-    elseif ($action == 'hardpoweroff') { //VALID: Hard power the PC off (hold the power button in for 5 seconds).
+    elseif ($action == "hardpoweroff") { //VALID: Hard power the PC off (hold the power button in for 5 seconds).
         $piCommand = "16relind $board write $relay on; sleep 5; 16relind $board write $relay off";
     }
-    elseif ($action == 'hardreset') { //VALID: Hard reset the PC with the reset button (hold for 0.1 seconds).
-        $relay = $relay + 1; //Add 1 to the relay number as the hardreset command is the next relay along.
+    elseif ($action == "hardreset") { //VALID: Hard reset the PC with the reset button (hold for 0.1 seconds).
+        $relay++; //Add 1 to the relay number as the hardreset command is the next relay along.
         $piCommand = "16relind $board write $relay on; sleep 0.1; 16relind $board write $relay off";
     }
     else { //ERROR: Action specified was invalid.
@@ -136,7 +142,7 @@ if($_POST) {
     }
     elseif ($authError) {
         http_response_code(response_code: 401); //Set the HTTP response code to 401 (Unauthorized) to signal the key was incorrect or missing.
-        $errorText = '<h1><span class="red">Failure!</span></h1>The following error was returned: <strong><span class="red">' .$errorText. '</span></strong>, Please try again.<br><br>';
+        $errorText = "<h1><span class=\"red\">Failure!</span></h1>The following error was returned: <strong><span class=\"red\">$errorText</span></strong>, Please try again.<br><br>";
         echo $errorText;
     }
     else { //ERROR: The $errorText variable had some text entered above, meaning there must be some sort of syntax error.
