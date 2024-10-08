@@ -25,7 +25,7 @@ echo Please wait whilst the Remote Respawn installs...
 #Enable I2C On the Pi
 sudo raspi-config nonint do_i2c 0
 
-#Update and upgrade all pakcages now
+#Update and upgrade all packages now
 apt update
 apt upgrade -y
 apt autoremove -y
