@@ -31,7 +31,7 @@ apt upgrade -y
 apt autoremove -y
 
 #Install required extensions
-apt install build-essential python3-pip python3-dev python3-smbus git -y
+apt install build-essential python3-pip python3-dev python3-smbus git uuid-runtime -y
 
 #Install 16relay software
 rm /tmp/16relay/ -Rf
@@ -89,7 +89,7 @@ mv /tmp/r2-tmp/* /var/www/html -f
 #Setup API Keys file
 mkdir /var/www/keys
 touch /var/www/keys/auth_keys
-APIKEY=$(tr -dc a-z0-9 </dev/urandom | head -c 32; echo)
+APIKEY=$(uuidgen)
 ENC_KEY=$(echo -n $APIKEY | sha256sum)
 ENC_KEY=${ENC_KEY% *}
 cat << EOF >> /var/www/keys/auth_keys

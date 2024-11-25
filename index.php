@@ -13,7 +13,7 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202410.2";
+$version = "202411.1";
 $year = "2024";
 
 ?>
@@ -158,7 +158,7 @@ if($_POST) {
             There are 4 power operations that can be carried out: <strong>poweron</strong>, <strong>shutdown</strong>, <strong>hardpoweroff</strong> and <strong>hardreset</strong>. <br><br>
             You will control the PCs via a _POST address containing the required data.<br><br>
             An example is using the <strong>Invoke-WebRequest</strong> PowerShell CMDLET, i.e.:<br><br>
-            <i><strong>Invoke-webRequest -Uri <span class="blue">https://<?php echo $ip;?>/</span> -Method Post -Body @{<span class="blue">computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"</span>}</strong></i><br><br>
+            <i><strong>Invoke-webRequest -Uri <span class="blue">https://<?php echo $ip;?>/</span> -Method Post -Body @{<span class="blue">computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"</span>} -SkipCertificateCheck</strong></i><br><br>
             Another example is using the <strong>curl</strong> command, i.e.:<br><br>
             <i><strong>curl -d "<span class="blue">computer=31&action=hardreset&apikey=xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx</span>" -X POST <span class="blue">https://<?php echo $ip;?>/</span></strong></i><br><br>
             <div style="width:500px;margin-left:auto;margin-right:auto">
