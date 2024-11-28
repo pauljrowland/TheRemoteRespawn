@@ -90,10 +90,10 @@ mv /tmp/r2-tmp/* /var/www/html -f
 mkdir /var/www/keys
 touch /var/www/keys/auth_keys
 APIKEY=$(uuidgen)
-ENC_KEY=$(echo -n $APIKEY | sha256sum)
-ENC_KEY=${ENC_KEY% *}
+#Hash the key with sha256. Remove " -" (white space and dash) from the end of the output.
+ENC_KEY=$(echo -n $APIKEY | sha256sum | tr -d "[:space:]-")  
 cat << EOF >> /var/www/keys/auth_keys
-$ENC_KEY 
+$ENC_KEY
 EOF
 chown www-data:www-data /var/www/keys/auth_keys
 chmod 400 /var/www/keys/auth_keys

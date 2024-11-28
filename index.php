@@ -13,7 +13,7 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202411.1";
+$version = "202411.2";
 $year = "2024";
 
 ?>
