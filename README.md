@@ -5,7 +5,8 @@
 2) Run the command "*wget https://raw.githubusercontent.com/pauljrowland/TheRemoteRespawn/main/setup.sh -O setup.sh*" to download the installer.    
 3) Run *sudo chmod +x setup.sh* command to make the script executable.
 4) Run *sudo ./setup.sh* to install all required packages.
-5) This will allow acess via http://<IP Address> and https://<IP Address>
+5) The script will generate your first API key and display it once complete, along with the URLs you can use to access the system.
+   NOTE: Please keep this key safe otheriwse you will need to create a new one (see below).
 
 ## Protecting With SSL
 NOTE: By default a self-signed SSL certificate is installed. To replace this with a signed certificate:
@@ -13,13 +14,20 @@ NOTE: By default a self-signed SSL certificate is installed. To replace this wit
     i.e. r2server, r2server.somedomain.com and 192.168.1.101 etc
 2) *sudo service apache2 restart* to bind the new certificate.
 
-## Adding users
-By default - nobody will be able to run commands as they will require an API key.
-1) Enter *sudo nano /var/www/keys/auth_keys* to edit the keystore.
-2) Generate an API key for each user. TIP: https://codepen.io/corenominal/pen/rxOmMJ will generate a perfectly valid key.
-3) Hash the key with SHA256. TIP: https://emn178.github.io/online-tools/sha256.html
-4) Add each hashed key to the auth_keys file on a new line.
-5) Provide the key generated in step 2 to the end user.
+## Replacing users
+All use of the Remote Respawn will require the use of an API key. You can have as many keys as you wish, however they all are able to perform the
+same actions. The */var/www/keys/auth_keys* file keeps the hashed keys on each line and these can be added / removed as you please.
+Because these are hashed, there is no way to retrieve the original!
+1) SSH onto the Remote Respawn server.
+2) Enter the *uuidgen* command which will generate a key. Ensure you keep this safe as it won't be shown again!
+3) You then need to hash the key, so for example - if *30accec9-04bd-4aa4-ab94-ff4cde0e0c6f* was generatd, type:
+   *echo 30accec9-04bd-4aa4-ab94-ff4cde0e0c6f | sha256sum*
+4) Copy the hashed string to the clipboard (omitting any spaces and dashes), in this case:
+   *ef1c3b1479d9c5c27d8317322db11acedcd01bdcfa84e9bb60b1a77bad20a8cc*
+5) Enter *sudo nano /var/www/keys/auth_keys* to edit the keystore.
+6) Add the hashed key generated in step 3/4 to the *auth_keys* file on a new line or replacing an existing key.
+7) Press *Ctrl + X* to save and choose *Y* to confirm.
+8) Repeat steps 2 to 7 for each key you wish to generate. 
 
 ## Use
 1) Enter the URL into the address bar as https://<IP Address> (or http).
