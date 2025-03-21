@@ -117,10 +117,10 @@ cat << EOF >> /etc/motd
           |  .  \|     | \    ||  |   |  |  | \      / |  |  |                   
           |__|\_||_____|  \___||__|   |__|__|  \_/\_/  |__|__|                   
  
-            The Remote Respawn 2025 - Paul Rowland
-       Unauthorized access to this device is prohibited!
+                The Remote Respawn 2025 - Paul Rowland
+          Unauthorized access to this device is prohibited!
 
-        https://github.com/pauljrowland/TheRemoteRespawn
+          https://github.com/pauljrowland/TheRemoteRespawn
 
 
 EOF
