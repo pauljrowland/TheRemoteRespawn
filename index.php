@@ -13,7 +13,7 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202503.2";
+$version = "202503.2a";
 $year = "2025";
 
 $overrides = 'overrides.php'; //File specifying any manual overrides for user specific cases
@@ -223,7 +223,7 @@ if($_POST) {
                 <a href="/">Home</a>
             </div>
             <div id="footer">
-                <h4>v<?php echo $version; echo "-"; echo $year; ?>-PaulJRowland - Source:<a href="https://github.com/pauljrowland/TheRemoteRespawn" target="blank">GitHub</a> - License:<a href="https://github.com/pauljrowland/TheRemoteRespawn/blob/main/LICENSE" target="blank">GNU GPL Version 3</a></h4>
+                <h4>v<?php echo $version; echo " - "; echo $year; ?> - PaulJRowland - Source:<a href="https://github.com/pauljrowland/TheRemoteRespawn" target="blank">GitHub</a> - License:<a href="https://github.com/pauljrowland/TheRemoteRespawn/blob/main/LICENSE" target="blank">GNU GPL Version 3</a></h4>
             </div>
         </div>
     </body>
