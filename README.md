@@ -21,7 +21,7 @@ Because these are hashed, there is no way to retrieve the original!
 1) SSH onto the Remote Respawn server.
 2) Enter the *uuidgen* command which will generate a key. Ensure you keep this safe as it won't be shown again!
 3) You then need to hash the key, so for example - if *30accec9-04bd-4aa4-ab94-ff4cde0e0c6f* was generatd, type:
-   *echo 30accec9-04bd-4aa4-ab94-ff4cde0e0c6f | sha256sum*
+   *echo -n 30accec9-04bd-4aa4-ab94-ff4cde0e0c6f | sha256sum*
 4) Copy the hashed string to the clipboard (omitting any spaces and dashes), in this case:
    *ef1c3b1479d9c5c27d8317322db11acedcd01bdcfa84e9bb60b1a77bad20a8cc*
 5) Enter *sudo nano /var/www/keys/auth_keys* to edit the keystore.
