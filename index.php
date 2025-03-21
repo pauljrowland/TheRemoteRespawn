@@ -13,8 +13,10 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202503.1";
+$version = "202503.2";
 $year = "2025";
+
+$overrides = 'overrides.php'; //File specifying any manual overrides for user specific cases
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +67,6 @@ $year = "2025";
         <br>
 <?php
 
-$overrides = 'overrides.php'; //File specifying any manual overrides for user specific cases
 //    Assemble variables to make the script run on any Pi with up to 8 Relay HATs.
 $ip = $_SERVER["SERVER_ADDR"]; //Get the server IP for reference.
 $listBoards = "16relind -list"; //Command to count number of HATs attached.
