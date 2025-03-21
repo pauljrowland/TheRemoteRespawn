@@ -17,7 +17,7 @@ echo "|  .  \|     | \    ||  |   |  |  | \      / |  |  |                   ";
 echo "|__|\_||_____|  \___||__|   |__|__|  \_/\_/  |__|__|                   ";
 echo "                                                                       ";   
 echo  
-echo             The Remote Respawn 2024 - Paul Rowland
+echo             The Remote Respawn 2025 - Paul Rowland
 echo        Unauthorized access to this device is prohibited!
 echo 
 echo Please wait whilst the Remote Respawn installs...
@@ -117,8 +117,10 @@ ____     ___   _____ ____    ____  __    __  ____
 |  .  \|     | \    ||  |   |  |  | \      / |  |  |                   
 |__|\_||_____|  \___||__|   |__|__|  \_/\_/  |__|__|                   
  
-            The Remote Respawn 2024 - Paul Rowland
+            The Remote Respawn 2054 - Paul Rowland
        Unauthorized access to this device is prohibited!
+
+       https://github.com/pauljrowland/TheRemoteRespawn
 
 
 EOF
