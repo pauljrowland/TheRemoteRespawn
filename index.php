@@ -13,8 +13,8 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202411.2";
-$year = "2024";
+$version = "202503.1";
+$year = "2025";
 
 ?>
 <!DOCTYPE html>
@@ -65,6 +65,7 @@ $year = "2024";
         <br>
 <?php
 
+$overrides = 'overrides.php'; //File specifying any manual overrides for user specific cases
 //    Assemble variables to make the script run on any Pi with up to 8 Relay HATs.
 $ip = $_SERVER["SERVER_ADDR"]; //Get the server IP for reference.
 $listBoards = "16relind -list"; //Command to count number of HATs attached.
@@ -75,7 +76,17 @@ if (str_contains(haystack: $numberOfHATs, needle: "Failed to open the bus")) { /
     echo "\n            </h2>\n";
     $numberOfHATs = 0; //Set number of HATs to 0, allowing the page to still display, alebit with the error.
 } else { //No issue communicating with the HATs.
-    $numberOfHATs = substr(string: $numberOfHATs, offset: 0, length: 1); //Rip out the number from the returned string.
+    if (file_exists($overrides)) {
+        include $overrides;
+        if (!(isset($forceNumberOfHATs))) {
+            $numberOfHATs = substr(string: $numberOfHATs, offset: 0, length: 1); //Rip out the number from the returned string.
+        }
+        else {
+            $numberOfHATs = $forceNumberOfHATs;
+        }
+    } else {
+        $numberOfHATs = substr(string: $numberOfHATs, offset: 0, length: 1); //Rip out the number from the returned string.
+    }
 }
 $pcsSupported = $numberOfHATs * 8; //Times by 8 to get the max number of supported PCs.
 $hashedKeys = explode(separator: "\n", string: file_get_contents(filename: "../keys/auth_keys")); //Read auth_keys file to authenticate the user.
