@@ -15,7 +15,7 @@ NOTE: By default a self-signed SSL certificate is installed. To replace this wit
 2) *sudo service apache2 restart* to bind the new certificate.
 
 ## Replacing users
-All use of the Remote Respawn will require the use of an API key. You can have as many keys as you wish, however they all are able to perform the
+All use of the Remote Respawn will require an API key. You can have as many keys as you wish, however they all are able to perform the
 same actions. The */var/www/keys/auth_keys* file keeps the hashed keys on each line and these can be added / removed as you please.
 Because these are hashed, there is no way to retrieve the original!
 1) SSH onto the Remote Respawn server.
