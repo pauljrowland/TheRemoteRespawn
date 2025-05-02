@@ -35,7 +35,7 @@ Because these are hashed, there is no way to retrieve the original!
 3) Enter a valid API key into the box and click "Submit"
 4) To carry out this command via PowerShell for example, use the following syntax:
     Invoke-webRequest -Uri https://<IP OR Name> -Method Post -Body @{computer="<PCNumber>";action="<Action>";apikey="<API Key>"}  
-    i.e.  
+    i.e.
     Invoke-webRequest -Uri https://192.168.1.100/ -Method Post -Body @{computer="31";action="hardreset";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"}  
     Invoke-webRequest -Uri https://192.168.1.100/ -Method Post -Body @{computer="10";action="poweron";apikey="xxxxx-xxxxxxx-xxxxxxx-xxxxxxxxx-xxxx"}  
 
