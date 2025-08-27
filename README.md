@@ -10,7 +10,7 @@
 ## Protecting With SSL
 By default a self-signed SSL certificate is installed. To replace this with a signed certificate:
 
- 1. Replace the `/var/www/ssl/r2.crt` and `/var/www/ssl/r2.key` files with a valid certifictae containing **all** hostnames **and** IP addresses:
+ 1. Replace the `/var/www/ssl/r2.crt` and `/var/www/ssl/r2.key` files with a valid certificate containing **all** hostnames **and** IP addresses:
  i.e. `r2server`, `r2server.somedomain.com` and `192.168.1.101` etc.
  2. `sudo service apache2 restart` to bind the new certificate.
 
