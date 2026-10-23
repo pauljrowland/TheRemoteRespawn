@@ -13,8 +13,8 @@
 //    This script is deigned to be accessed via a CURL request, more instructions are
 //    below when visiting the page in a browser.
 
-$version = "202503.2a";
-$year = "2025";
+$version = "202601.1";
+$year = "2026";
 
 $overrides = 'overrides.php'; //File specifying any manual overrides for user specific cases
 
@@ -208,7 +208,7 @@ if($_POST) {
                         </tr>
                         <tr style="text-align:left;">
                             <td>
-                                API Key*:
+                                API Key (Required):
                             </td>
                             <td>
                                 <input type="password" id="apikey" name="apikey" required>
